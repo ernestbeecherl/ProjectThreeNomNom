@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import { render } from 'react-dom';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Home from './pages/Home';
@@ -23,20 +22,3 @@ const Main = () => {
 };
 
 export default Main;
-=======
-//import React from 'react'
-//import ReactDOM from 'react-dom/client'
-//import App from '../App.jsx'
-import '../index.css'
-import Home from './pages/Home';
-import Login from './pages/Login'; 
-import ReactDOM from 'react-dom/client'; 
-import React from 'react'; 
-import App from '../App.jsx'; 
-
-ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-)
->>>>>>> 218d8179e952b9decdce5eb0251804e4566f0769
