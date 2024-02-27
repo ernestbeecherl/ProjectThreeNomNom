@@ -1,8 +1,14 @@
+<<<<<<< HEAD
 import {jwtDecode} from 'jwt-decode';
+=======
+import { jwtDecode } from "jwt-decode";
+
+
+>>>>>>> 218d8179e952b9decdce5eb0251804e4566f0769
 
 class AuthService {
   getProfile() {
-    return decode(this.getToken());
+    return jwtDecode(this.getToken());
   }
 
   loggedIn() {
@@ -13,7 +19,7 @@ class AuthService {
 
   isTokenExpired(token) {
     try {
-      const decoded = decode(token);
+      const decoded = jwtDecode(token);
       if (decoded.exp < Date.now() / 1000) {
         return true;
       } else return false;
