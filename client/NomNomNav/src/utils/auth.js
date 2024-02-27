@@ -1,10 +1,4 @@
-<<<<<<< HEAD
 import {jwtDecode} from 'jwt-decode';
-=======
-import { jwtDecode } from "jwt-decode";
-
-
->>>>>>> 218d8179e952b9decdce5eb0251804e4566f0769
 
 class AuthService {
   getProfile() {
