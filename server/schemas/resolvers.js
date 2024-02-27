@@ -1,63 +1,107 @@
-// Import necessary libraries for making requests to Yelp API
-const axios = require('axios');
-const { signToken, AuthenticationError } = require('../utils/auth');
-const { Profile } = require('../models');
+const Restaurant = require("../models/Restaurant");
+const User = require("../models/User");
 
 const resolvers = {
   Query: {
-    async searchRestaurants(_, { term, location }) {
+    searchRestaurants: async (_, { term, location, limit, offset }) => {
       try {
-        // Make a request to Yelp API
-        const response = await axios.get('https://api.yelp.com/v3/businesses/search', {
-          headers: {
-            Authorization: `Bearer joyVR4sZF7Iw4usNaD0b4UM5KgNvrs67HFZ9SecXMjT5966uzr9ENXIndrmx5EMx8eQzOGp23x1sf8GG9JDB1qPCH_m3kws18wvnL0bodJ8a78JJ7ATc1xYfPvnXZXYx`,
-          },
-          params: {
-            term,
-            location,
-          },
-        });
-
-        // Process the response and return relevant data
-        return response.data.businesses.map(business => ({
-          id: business.id,
-          name: business.name,
-          address: business.location.address1,
-          rating: business.rating,
-          // Add more fields as needed
-        }));
+        const restaurants = await Restaurant.find({
+          name: { $regex: term, $options: "i" },
+          location: { $regex: location, $options: "i" },
+        })
+          .limit(limit || 10)
+          .skip(offset || 0);
+        return restaurants;
       } catch (error) {
-        console.error('Error fetching restaurants:', error);
-        throw new Error('Failed to fetch restaurants');
+        throw new Error("Failed to fetch restaurants");
+      }
+    },
+    getRestaurantDetails: async (_, { id }) => {
+      try {
+        const restaurant = await Restaurant.findById(id);
+        return restaurant;
+      } catch (error) {
+        throw new Error("Failed to fetch restaurant details");
       }
     },
   },
+  Mutation: {
+    createReview: async (_, { restaurantId, review }) => {
+      try {
+        const user = await User.findById(review.userId);
+        if (!user) throw new Error("User not found");
 
-Mutation: {
-    addUser: async (parent, args) => {
-      const user = await User.create(args);
-      const token = signToken(user);
+        const restaurant = await Restaurant.findById(restaurantId);
+        if (!restaurant) throw new Error("Restaurant not found");
 
-      return { token, user };
-    },
-    login: async (parent, { email, password }) => {
-        const user = await User.findOne({ email });
-  
-        if (!user) {
-          throw AuthenticationError;
-        }
-  
-        const correctPw = await user.isCorrectPassword(password);
-  
-        if (!correctPw) {
-          throw AuthenticationError;
-        }
-  
-        const token = signToken(user);
-  
-        return { token, user };
+        const newReview = {
+          rating: review.rating,
+          text: review.text,
+          timeCreated: new Date().toISOString(),
+          user: user._id,
+        };
+
+        restaurant.reviews.push(newReview);
+        await restaurant.save();
+
+        return newReview;
+      } catch (error) {
+        throw new Error("Failed to create review");
       }
-    }
+    },
+    updateReview: async (_, { reviewId, review }) => {
+      try {
+        const restaurant = await Restaurant.findOneAndUpdate(
+          { "reviews._id": reviewId },
+          {
+            $set: {
+              "reviews.$.rating": review.rating,
+              "reviews.$.text": review.text,
+            },
+          },
+          { new: true }
+        );
+
+        if (!restaurant) throw new Error("Review not found");
+
+        const updatedReview = restaurant.reviews.find(
+          (r) => r._id.toString() === reviewId
+        );
+        return updatedReview;
+      } catch (error) {
+        throw new Error("Failed to update review");
+      }
+    },
+  },
+  Restaurant: {
+    // Resolver function for nested field 'location'
+    location: (parent) => {
+      // Assuming location is directly available in the parent object
+      return parent.location;
+    },
+    // Resolver function for nested field 'reviews'
+    reviews: async (parent) => {
+      try {
+        const restaurant = await Restaurant.findById(parent.id);
+        if (!restaurant) throw new Error("Restaurant not found");
+        return restaurant.reviews;
+      } catch (error) {
+        throw new Error("Failed to fetch reviews");
+      }
+    },
+  },
+  Review: {
+    // Resolver function for nested field 'user'
+    user: async (parent) => {
+      try {
+        const user = await User.findById(parent.user);
+        if (!user) throw new Error("User not found");
+        return user;
+      } catch (error) {
+        throw new Error("Failed to fetch user");
+      }
+    },
+  },
 };
 
 module.exports = resolvers;

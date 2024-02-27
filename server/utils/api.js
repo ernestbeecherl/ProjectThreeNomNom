@@ -1,8 +1,33 @@
-const Yelp = require('yelp');
-require('dotenv').config();
+const fetch = require("node-fetch");
+const dotenv = require("dotenv");
 
-const yelp = new Yelp({
-    clientId: process.env.API_KEY, //|| 'WxNvD3CiqGyoYHtVCP7UzA'
-    clientSecret: process.env.API_SECRET //|| 'joyVR4sZF7Iw4usNaD0b4UM5KgNvrs67HFZ9SecXMjT5966uzr9ENXIndrmx5EMx8eQzOGp23x1sf8GG9JDB1qPCH_m3kws18wvnL0bodJ8a78JJ7ATc1xYfPvnXZXYx'
+dotenv.config();
 
-});
+const apiKey = process.env.YELP_API_KEY;
+const apiUrl = "https://api.yelp.com/v3/businesses";
+
+const searchRestaurants = async (term, location, limit = 10, offset = 0) => {
+  const url = `${apiUrl}/search?term=${term}&location=${location}&limit=${limit}&offset=${offset}`;
+  const response = await fetch(url, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${apiKey}`,
+    },
+  });
+  const data = await response.json();
+  return data.businesses;
+};
+
+const getRestaurantDetails = async (id) => {
+  const url = `${apiUrl}/${id}`;
+  const response = await fetch(url, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${apiKey}`,
+    },
+  });
+  const data = await response.json();
+  return data;
+};
+
+module.exports = { searchRestaurants, getRestaurantDetails };
