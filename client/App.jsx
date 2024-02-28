@@ -45,10 +45,6 @@ function App() {
           <Outlet />
         </div>
         <div> Hello world</div>
-        
-
-
-
        {/* <Footer /> */}
       </div>
     </ApolloProvider>
