@@ -3,7 +3,7 @@ const dotenv = require("dotenv");
 
 dotenv.config();
 
-const apiKey = process.env.YELP_API_KEY;
+const apiKey = process.env.VITE_YELP_API_KEY;
 const apiUrl = "https://api.yelp.com/v3/businesses";
 
 const searchRestaurants = async (term, location, limit = 10, offset = 0) => {

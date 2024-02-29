@@ -1,6 +1,6 @@
 import Auth from "../utils/auth";
 import { Link } from "react-router-dom";
-import Home from "../pages/Home"; 
+//import Home from "../pages/Home"; 
 import React from "react";
 
 function Nav() {

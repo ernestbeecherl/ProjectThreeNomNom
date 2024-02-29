@@ -1,24 +1,27 @@
 import axios from 'axios';
-import dotenv from 'dotenv';
 
-dotenv.config();
+// Load environment variables
+const apiKey = import.meta.env.VITE_YELP_API_KEY;
 
-const API_KEY = process.env.YELP_API_KEY;
+// Base URL for Yelp API
+const baseURL = 'https://api.yelp.com/v3';
 
-const API_URL = 'https://api.yelp.com/v3';
+// Create an instance of axios with base URL and default headers
+const axiosInstance = axios.create({
+  baseURL,
+  headers: {
+    'Authorization': `Bearer ${apiKey}`,
+    'Content-type': 'application/json',
+  },
+});
 
-const headers = {
-  Authorization: `Bearer ${API_KEY}`,
-  'Content-Type': 'application/json',
-};
-
+// Define your Yelp API functions
 export const searchRestaurants = async (term, location) => {
   try {
-    const response = await axios.get(`${API_URL}/businesses/search`, {
-      headers: headers,
+    const response = await axiosInstance.get('/businesses/search', {
       params: {
-        term: term,
-        location: location,
+        term,
+        location,
       },
     });
     return response.data.businesses;
@@ -30,9 +33,7 @@ export const searchRestaurants = async (term, location) => {
 
 export const getRestaurantDetails = async (id) => {
   try {
-    const response = await axios.get(`${API_URL}/businesses/${id}`, {
-      headers: headers,
-    });
+    const response = await axiosInstance.get(`/businesses/${id}`);
     return response.data;
   } catch (error) {
     console.error('Error getting restaurant details:', error);
@@ -42,12 +43,12 @@ export const getRestaurantDetails = async (id) => {
 
 export const searchReviews = async (id) => {
   try {
-    const response = await axios.get(`${API_URL}/businesses/${id}/reviews`, {
-      headers: headers,
-    });
+    const response = await axiosInstance.get(`/businesses/${id}/reviews`);
     return response.data.reviews;
   } catch (error) {
     console.error('Error searching for reviews:', error);
     throw error;
   }
 };
+
+// Add more Yelp API functions as needed

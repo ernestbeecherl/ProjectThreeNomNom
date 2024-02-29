@@ -1,8 +1,8 @@
 import ReactDOM from 'react-dom/client'
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
-import './'
+import '/src/index.css'
 
-import Home from './pages/Home';
+import Home from './pages/Home.jsx';
 //import Detail from './pages/Detail';
 import NoMatch from './pages/NoMatch';
 import Login from './pages/Login';
@@ -26,15 +26,6 @@ const router = createBrowserRouter([
       }, {
         path: '/signup',
         element: <Signup />
-      }, {
-        path: '/products/:id',
-        element: <Detail />
-      }, {
-        path: '/orderHistory',
-        element: <OrderHistory />
-      }, {
-        path: '/success',
-        element: <Success />
       }
     ]
   }

@@ -3,7 +3,7 @@ const { ApolloServer } = require('@apollo/server');
 const { expressMiddleware } = require('@apollo/server/express4');
 const path = require('path');
 const { authMiddleware } = require('./utils/auth');
-
+const apiRouter = require('./api');
 const { typeDefs, resolvers } = require('./schemas');
 const db = require('./config/connection');
 
@@ -13,6 +13,7 @@ const server = new ApolloServer({
   typeDefs,
   resolvers,
 });
+app.use('/api', apiRouter);
 
 // Create a new instance of an Apollo server with the GraphQL schema
 const startApolloServer = async () => {
