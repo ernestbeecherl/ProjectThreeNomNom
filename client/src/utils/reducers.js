@@ -1,93 +1,102 @@
-import {
-    UPDATE_PRODUCTS,
-    ADD_TO_CART,
-    UPDATE_CART_QUANTITY,
-    REMOVE_FROM_CART,
-    ADD_MULTIPLE_TO_CART,
-    UPDATE_CATEGORIES,
-    UPDATE_CURRENT_CATEGORY,
-    CLEAR_CART,
-    TOGGLE_CART,
-  } from './actions';
-  
-  // TODO: To get a better understand of how a reducer works - add comments to the various actions in the reducer
-  export const reducer = (state, action) => {
-    switch (action.type) {
-      // TODO: Add a comment describing the functionality of the UPDATE_PRODUCTS case
-      // Your comment here
-      case UPDATE_PRODUCTS:
-        return {
-          ...state,
-          products: [...action.products],
-        };
-  
-      case ADD_TO_CART:
-        return {
-          ...state,
-          cartOpen: true,
-          cart: [...state.cart, action.product],
-        };
-  
-      case ADD_MULTIPLE_TO_CART:
-        return {
-          ...state,
-          cart: [...state.cart, ...action.products],
-        };
-      // TODO: Add a comment describing the functionality of the UPDATE_CART_QUANTITY case
-      // Your comment here
-      case UPDATE_CART_QUANTITY:
-        return {
-          ...state,
-          cartOpen: true,
-          cart: state.cart.map((product) => {
-            if (action._id === product._id) {
-              product.purchaseQuantity = action.purchaseQuantity;
-            }
-            return product;
-          }),
-        };
-  
-      // TODO: Add a comment describing the functionality of the REMOVE_FROM_CART case
-      // Your comment here
-      case REMOVE_FROM_CART:
-        let newState = state.cart.filter((product) => {
-          return product._id !== action._id;
-        });
-  
-        return {
-          ...state,
-          cartOpen: newState.length > 0,
-          cart: newState,
-        };
-  
-      case CLEAR_CART:
-        return {
-          ...state,
-          cartOpen: false,
-          cart: [],
-        };
-  
-      case TOGGLE_CART:
-        return {
-          ...state,
-          cartOpen: !state.cartOpen,
-        };
-  
-      case UPDATE_CATEGORIES:
-        return {
-          ...state,
-          categories: [...action.categories],
-        };
-  
-      case UPDATE_CURRENT_CATEGORY:
-        return {
-          ...state,
-          currentCategory: action.currentCategory,
-        };
-  
-      // TODO: Add a comment describing what the default case is for
-      // Your comment here
-      default:
-        return state;
-    }
-  };
+import { combineReducers } from 'redux';
+import { LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE } from './actions';
+
+// Define your initial state for restaurants
+const initialRestaurantState = {
+  restaurants: [],
+  restaurantDetails: null,
+  loading: false,
+  error: null
+};
+
+// Define your reducer for restaurants
+const restaurantReducer = (state = initialRestaurantState, action) => {
+  switch (action.type) {
+    case 'FETCH_RESTAURANTS_REQUEST':
+      return {
+        ...state,
+        loading: true,
+        error: null
+      };
+    case 'FETCH_RESTAURANTS_SUCCESS':
+      return {
+        ...state,
+        loading: false,
+        restaurants: action.payload,
+        error: null
+      };
+    case 'FETCH_RESTAURANTS_FAILURE':
+      return {
+        ...state,
+        loading: false,
+        error: action.payload
+      };
+    case 'FETCH_RESTAURANT_DETAILS_REQUEST':
+      return {
+        ...state,
+        loading: true,
+        error: null
+      };
+    case 'FETCH_RESTAURANT_DETAILS_SUCCESS':
+      return {
+        ...state,
+        loading: false,
+        restaurantDetails: action.payload,
+        error: null
+      };
+    case 'FETCH_RESTAURANT_DETAILS_FAILURE':
+      return {
+        ...state,
+        loading: false,
+        error: action.payload
+      };
+    default:
+      return state;
+  }
+};
+
+// Define your initial state for users
+const initialUserState = {
+  loading: false,
+  error: null,
+  user: null,
+  token: null,
+};
+
+// Define your reducer for users
+const userReducer = (state = initialUserState, action) => {
+  switch (action.type) {
+    case LOGIN_REQUEST:
+      return {
+        ...state,
+        loading: true,
+        error: null,
+      };
+    case LOGIN_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        error: null,
+        user: action.payload,
+        token: action.payload.token,
+      };
+    case LOGIN_FAILURE:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload,
+        user: null,
+        token: null,
+      };
+    default:
+      return state;
+  }
+};
+
+// Combine both reducers into a single reducer
+const rootReducer = combineReducers({
+  restaurant: restaurantReducer,
+  user: userReducer
+});
+
+export default rootReducer;
