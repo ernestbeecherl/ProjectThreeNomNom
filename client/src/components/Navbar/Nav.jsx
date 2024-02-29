@@ -1,3 +1,8 @@
+//import Auth from "../../utils/auth";
+//import { Link } from "react-router-dom";
+import Home from "../../pages/Home"; 
+//import React from "react";
+
 import React from "react";
 import {
   Navbar,
@@ -251,3 +256,4 @@ export function NavbarWithSearch() {
     </Navbar>
   );
 }
+export default NavbarWithSearch; 

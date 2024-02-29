@@ -7,18 +7,11 @@ import {
 } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 import { Outlet } from 'react-router-dom';
-<<<<<<< HEAD
-import React from 'react';
-import Header from '../components/Header/';
-import Footer from '../components/Footer/';
-import Nav from './components/Nav'; 
-=======
 
 //import Header from './components/Header';
 //import Footer from './components/Footer';
-import Nav from './src/components/Nav'; 
+import Nav from './src/components/Navbar/Nav'; 
 import Login from './src/pages/Login'; 
->>>>>>> cd0982e6c0a73418e44c627f158d9a9dda0529b6
 
 // Construct our main GraphQL API endpoint
 const httpLink = createHttpLink({
