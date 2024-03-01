@@ -10,7 +10,7 @@ import { Outlet } from 'react-router-dom';
 
 //import Header from './components/Header';
 //import Footer from './components/Footer';
-import Nav from './src/components/Nav'; 
+//import Nav from './src/components/Navbar/Nav'; 
 import Login from './src/pages/Login'; 
 
 // Construct our main GraphQL API endpoint

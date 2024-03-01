@@ -1,12 +1,10 @@
 # NomNomNavigator using React, Node/Express.js, MongoDB, 
 
-![Startup](.PNG)
-
-![Search](.PNG)
+![Startup](demo.png)
 
 ## Introduction
 
-NomNomNavigator is a restaurant locator that gives you the option to find food around your local area and also check out reviews. You will be able to make your own account to build your own personal profile. It's built using the Chakra-UI CSS framework, which provides a clean and modern user interface. It also uses Node.js and Express.js for the back end. It will also use React for the front end. It will also feature MongoDB Atlas for the database while using the Yelp API.
+NomNomNavigator is a restaurant locator that gives you the option to find food around your local area and also check out reviews. You will be able to make your own account to build your own personal profile. It's built using the TailwindCSS framework, which provides a clean and modern user interface. It also uses Node.js and Express.js for the back end. It will also use React for the front end. It will also feature MongoDB Atlas for the database while using the Yelp API.
 
 ## Table of Contents
 - [Features](#features)
@@ -25,7 +23,7 @@ NomNomNavigator is a restaurant locator that gives you the option to find food a
 - Launched through Render.
 - Uses React for the front end.
 - Uses Node.js and Express.js for the back end.
-- Chakra UI for CSS framework.
+- Uses TailwindCSS for the framework.
 - MongoDB for the database.
 - Yelp API for data.
 
@@ -39,7 +37,7 @@ NomNomNavigator is a restaurant locator that gives you the option to find food a
 
 1. Clone the repository: 
 
-        "$ git clone https://github.com/ernestbeecherl/ProjectThreeNomNom"
+        "$ git clone "https://github.com/ernestbeecherl/ProjectThreeNomNom"
 
 ## Usage
 
@@ -57,7 +55,7 @@ NomNomNavigator is a restaurant locator that gives you the option to find food a
 - Anthony Guerra  https://github.com/tonyG4A
 - Keung Inthachak https://github.com/kyungda
 - React https://react.dev/
-- Chakra-UI https://chakra-ui.com/
+- Tailwind CSS https://tailwindcss.com/
 - Yelp API https://docs.developer.yelp.com/
 - Express JS https://expressjs.com/
 - Node JS https://nodejs.org/en
